@@ -1,0 +1,13 @@
+{
+    "sqltools.connections": [
+        {
+            "database": "banna",
+            "dialect": "MySQL",
+            "name": "venky",
+            "password": "actscdac",
+            "port": 3333,
+            "server": "localhost",
+            "username": "dac"
+        }
+    ]
+}
