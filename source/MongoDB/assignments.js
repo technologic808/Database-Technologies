@@ -37,10 +37,13 @@ db.restaurant.find({ "grades.score": { $gt: 30 } }).pretty()
 // 9. Write a MongoDB query to find the restaurants that achieved a score, more than 80 but
 // less than 100.
 
-db.restaurant.find({ "grades.score": { $gt: 30 } }).pretty()
+db.restaurants.find({'grades':{$elemMatch:{'score':{$gt: 80, $lt: 100 }}}}).pretty()
 
 // 10. Write a MongoDB query to find the restaurants which locate in latitude value less than -
 // 95.754168.
+
+db.restaurants.find({'address.coord.0':{$lt: 95.754168}}).pretty()
+
 // 11. Write a MongoDB query to find the restaurants that do not prepare any cuisine of
 // 'American' and their grade score more than 70 and latitude less than -65.754168.
 // 12. Write a MongoDB query to find the restaurants which do not prepare any cuisine of
