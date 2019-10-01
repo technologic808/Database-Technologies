@@ -5,19 +5,40 @@ db.restaurant.find().pretty();
 // 2. Write a MongoDB query to display the fields restaurant_id, name, borough and cuisine for
 // all the documents in the collection restaurant.
 
-db.restaurant.find({}, { restaurant_id: true, name: true, borough: true, cuisine: true, _id: false }).pretty()
+db.restaurant.find({}, { restaurant_id: true, name: true, borough: true, cuisine: true }).pretty()
 
 // 3. Write a MongoDB query to display the fields restaurant_id, name, borough and cuisine,
 // but exclude the field _id for all the documents in the collection restaurant.
+
+db.restaurant.find({}, { restaurant_id: true, name: true, borough: true, cuisine: true, _id: false }).pretty()
+
 // 4. Write a MongoDB query to display the fields restaurant_id, name, borough and zip code,
 // but exclude the field _id for all the documents in the collection restaurant.
+
+db.restaurant.find({}, { restaurant_id: true, name: true, borough: true, "address.zipcode": true, _id: false }).pretty()
+
 // 5. Write a MongoDB query to display all the restaurant which is in the borough Bronx
+
+db.restaurant.find({ borough: 'Bronx' }).pretty()
+
 // 6. Write a MongoDB query to display the first 5 restaurant which is in the borough Bronx.
+
+db.restaurant.find({ borough: 'Bronx' }).pretty().limit(5)
+
 // 7.Write a MongoDB query to display the next 5 restaurants after skipping first 5 which are in
 // the borough Bronx.
+
+db.restaurant.find({ borough: 'Bronx' }).pretty().limit(5).skip(5)
+
 // 8. Write a MongoDB query to find the restaurants who achieved a score more than 90.
+
+db.restaurant.find({ "grades.score": { $gt: 30 } }).pretty()
+
 // 9. Write a MongoDB query to find the restaurants that achieved a score, more than 80 but
 // less than 100.
+
+db.restaurant.find({ "grades.score": { $gt: 30 } }).pretty()
+
 // 10. Write a MongoDB query to find the restaurants which locate in latitude value less than -
 // 95.754168.
 // 11. Write a MongoDB query to find the restaurants that do not prepare any cuisine of
