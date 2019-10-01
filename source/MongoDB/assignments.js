@@ -46,12 +46,21 @@ db.restaurants.find({'address.coord.0':{$lt: 95.754168}}).pretty()
 
 // 11. Write a MongoDB query to find the restaurants that do not prepare any cuisine of
 // 'American' and their grade score more than 70 and latitude less than -65.754168.
+
+ db.restaurants.find({cuisine: {$nin: ["American"]}}).pretty();
+
 // 12. Write a MongoDB query to find the restaurants which do not prepare any cuisine of
 // 'American' and achieved a score more than 70 and located in the longitude less than -
 // 65.754168.
+
+db.restaurants.find({cuisine: {$nin: ["American"]},'grades.score': {$gt: 70}, 'address.coord.1':{$lt:65.754168}}).pretty();
+
 // 13. Write a MongoDB query to find the restaurants which do not prepare any cuisine of
 // 'American ' and achieved a grade point 'A' not belongs to the borough Brooklyn. The
 // document must be displayed according to the cuisine in descending order.
+
+
+
 // 14. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those
 // restaurants which contain 'Wil' as first three letters for its name.
 // 15. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those
