@@ -69,16 +69,15 @@ db.employees.update(
 
 // Update the Employee collection for this.
 
-// 2. Change the number of hours for project-1 to 5 for all employees with designation analyst.
+// 2. Change the number of hours for project-1 to 5 for all employees with designation ao.
 
 db.employees.update(
-	{ projec: "Analyst" },
-	{ desg: "AO" },
-	{
-		upsert: 0,
-		multi: 1
-	}
+	{ desg: "AO", "project.name": "Project 1" },
+	{ $set: { "project.$.hrs": 5 } },
+	{ multi: 1 }
 );
+
+db.employees.find({ desg: "AO", "project.name": "Project 1" }).pretty();
 
 // 3. Add 2 projects project-3 and project-4 for employee whose name starts with ”Deep” with 2 hrs
 // 4. Add bonus rs 2000 for all employees with salary > 50000 and 1500 if salary <50000 and >
