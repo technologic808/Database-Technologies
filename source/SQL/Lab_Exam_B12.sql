@@ -172,36 +172,17 @@ delimiter ;
 
 call order_type_concise();
 
+# Q3: mongodb
+# Create collection customers to store(custid, custname, city, creditlimit)
 
+-- > use technologic
+-- > db.createCollection("customers")
+-- > db.customers.insert({custid:1, custname:"Kishori", city: "Pune", creditlimit: 5000})
 
+# Display all collections whose city contains u at second position
 
+-- > db.customers.find({city:/^.u/},{_id:0}).pretty()
 
+# Display customers whose credit limit is either 5000 or 3000 or 2500
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- > db.customers.find({creditlimit:{$in:[5000, 3000, 2500]}}).pretty()
