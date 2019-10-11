@@ -1,0 +1,123 @@
+# PRN 0214
+# Venkatesh Ransing
+
+# Note: This is an end to end SQL script and can be directly executed using 'source' or through the workbench
+
+create database if not exists tech;
+use tech;
+
+drop table if exists tour;
+
+drop table if exists salesman;
+
+CREATE TABLE salesman (
+    sno INT(5) PRIMARY KEY,
+    sname VARCHAR(30) NOT NULL,
+    email VARCHAR(20) UNIQUE NOT NULL,
+    city VARCHAR(10),
+    start_year DATE,
+    commission INT(7)
+);
+
+
+CREATE TABLE tour (
+    tourid INT(5) PRIMARY KEY,
+    fromcity VARCHAR(30) NOT NULL,
+    tocity VARCHAR(20),
+    total_seat INT(3),
+    sid INT(5)
+);
+
+INSERT INTO salesman VALUES (1, 'John', 'john@travel.com', 'Pune', '2011-01-02', 1000);
+INSERT INTO salesman VALUES (2, 'Tom', 'tom@travel.com', 'Mumbai', '2011-01-02', 1000);
+INSERT INTO salesman VALUES (3, 'Jim', 'jim@travel.com', 'Pune', '2011-01-02', 1000);
+INSERT INTO salesman VALUES (4, 'Sia', 'sia@travel.com', 'Mumbai', '2011-01-02', 1000);
+INSERT INTO salesman VALUES (5, 'Sarah', 'sarah@travel.com', 'Pune', '2011-01-02', 1000);
+INSERT INTO salesman VALUES (6, 'Megan', 'megan@travel.com', 'Shimla', '2011-01-02', 1000);
+INSERT INTO salesman VALUES (7, 'Jack', 'jack@travel.com', 'Manali', '2011-01-02', 1000);
+
+INSERT INTO tour VALUES (1, 'Mumbai', 'Goa', 20, 1);
+INSERT INTO tour VALUES (2, 'Delhi', 'Kanyakumari', 20, 2);
+INSERT INTO tour VALUES (3, 'Pune', 'Shimla', 20, 3);
+INSERT INTO tour VALUES (4, 'Mumbai', 'Goa', 20, 4);
+INSERT INTO tour VALUES (5, 'Delhi', 'Kanyakumari', 20, 5);
+INSERT INTO tour VALUES (6, 'Pune', 'Shimla', 20, 4);
+INSERT INTO tour VALUES (7, 'Mumbai', 'Goa', 20, 5);
+INSERT INTO tour VALUES (8, 'Pune', 'Shimla', 20, 5);
+
+select * from salesman;
+select * from tour;
+
+# Q1 -> 1: List all salesman number and name who arrange tours from mumbai to goa 
+
+SELECT 
+    s.sno 'Salesman Number', s.sname 'Salesman Name'
+FROM
+    salesman s,
+    tour t
+WHERE
+    s.sno = t.sid
+        AND (fromcity = 'Mumbai' AND tocity = 'Goa');
+        
+# Q1 -> 2: Find no of tours arranged by each salesman who stays in Pune, descending order of number of trips
+
+SELECT 
+    s.sname 'Salesman Name', COUNT(*) 'Number of Tours'
+FROM
+    salesman s,
+    tour t
+WHERE
+    s.sno = t.sid AND s.city = 'Pune'
+GROUP BY sname
+ORDER BY COUNT(*) DESC;
+
+# Q1 -> 3: List all salesman who have not arranged any tours
+
+SELECT 
+    s.sno 'ID',
+    sname 'Salespeople who have not arranged any tours'
+FROM
+    salesman s
+        LEFT JOIN
+    tour t ON s.sno = t.sid
+WHERE
+    tourid IS NULL;
+
+# Q2: Create table touraudit(tourno, tourname, date_deleted)
+#		write a trigger to add entry to touraudit before any user delete record from tour table
+
+drop table if exists touraudit;
+
+CREATE TABLE IF NOT EXISTS touraudit (
+    _id INT PRIMARY KEY AUTO_INCREMENT,
+    tourno INT,
+    tourname VARCHAR(50),
+    date_deleted DATE
+);
+
+# Trigger
+
+drop trigger if exists tour_delete;
+
+delimiter //
+
+create trigger tour_delete before DELETE on tour 
+for each row
+begin
+insert into touraudit (tourno, tourname, date_deleted) values (old.tourid, concat(old.fromcity, " to ", old.tocity ) , curdate());
+end //
+
+delimiter ;
+
+# Test cases for trigger functionality check
+
+INSERT INTO tour VALUES (100, 'Mumbai', 'Goa', 20, 1);
+INSERT INTO tour VALUES (101, 'Pune', 'Shimla', 20, 1);
+
+DELETE from tour where tourid = 100;
+DELETE from tour where tourid = 101;
+
+
+select * from touraudit;
+
+

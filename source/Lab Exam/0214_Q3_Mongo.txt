@@ -1,0 +1,15 @@
+use tech;
+
+db.createCollection("tour");
+
+db.tour.insert({tourid:1, tname:'Mumbai to Goa', from:'Mumbai', to: 'Goa', total_seat:20});
+db.tour.insert({tourid:2, tname:'Pune to Goa', from:'Pune', to: 'Goa', total_seat:40});
+db.tour.insert({tourid:3, tname:'Mumbai to Goa', from:'Mumbai', to: 'Goa', total_seat:50});
+db.tour.insert({tourid:4, tname:'Pune to Shimla', from:'Pune', to: 'Shimla', total_seat:20});
+db.tour.insert({tourid:5, tname:'Delhi to Kanyakumari', from:'Delhi', to: 'Kanyakumari', total_seat:70});
+
+db.tour.find({total_seats:{$gt:30}},{_id:0, tourid:1, tname:1}).pretty();
+
+db.tour.update({tname:'Mumbai to Goa'},{total_seat:{$add:20}},{multi:1})
+
+db.tour.find().pretty()
